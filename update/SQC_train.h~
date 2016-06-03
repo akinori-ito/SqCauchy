@@ -1,0 +1,29 @@
+#ifndef SQC_TRAIN_H
+#define SQC_TRAIN_H
+#include <string>
+
+class SQCauchy {
+ public:
+  int dim;
+  int nmix;
+  float **mean;
+  float **var;
+  float *weight;
+  SQCauchy(int Dim, int NMix);
+  ~SQCauchy();
+  void readBinary(std::string filename);
+  void writeBinary(std::string filename);
+  double prob_i(float *x,int i);
+  double prob(float *x);
+  double logprob(float *x);
+  void update_weight(int i, double diff, double delta) {
+    weight[i] += delta*diff;
+  }
+  void update_mean(int i, int k, double diff, double delta) {
+    mean[i][k] += delta*diff;
+  }
+  void update_var(int i, int k, double diff, double delta) {
+    var[i][k] += delta*diff;
+  }
+};
+#endif
